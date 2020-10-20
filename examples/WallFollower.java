@@ -1,30 +1,23 @@
-package com.gnapa.mazes.client;
+package com.gnapa.mazes.client.solver;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.gnapa.mazes.solver.AbstractSolver;
+import com.gnapa.mazes.solver.IMazeSolver;
 import com.gnapa.mazes.solver.IRobot;
-import com.gnapa.mazes.solver.Robot;
 
-public class WallFollower extends AbstractSolver {
+public class WallFollower implements IMazeSolver {
 
-
-    public WallFollower(String[][] maze, int startingX, int startingY) {
-        super(maze, startingX, startingY);
-    }
+    private String[][] maze;
 
     @Override
-    public void solve(IRobot iRobot) {
-        if (iRobot instanceof Robot) {
-            Robot robot = (Robot) iRobot;
-            robot.setInitialCoordinates(startingX, startingY);
-            Set<String> visited = new HashSet<>();
-            visitAll(robot, visited);
-        }
+    public void solve(IRobot robot, String[][] maze) {
+        this.maze = maze;
+        Set<String> visited = new HashSet<>();
+        visitAll(robot, visited);
     }
     
-    private boolean visitAll(Robot robot, Set<String> visited) {
+    private boolean visitAll(IRobot robot, Set<String> visited) {
         
         if (robot.isDone(maze)) {
             return true;
@@ -57,8 +50,8 @@ public class WallFollower extends AbstractSolver {
         return false;
     }
 
-    private String coorKey(Robot robot) {
-        return String.format("%d-%d", robot.getX(), robot.getY());
+    private String coorKey(IRobot robot) {
+        return String.format("%d-%d", robot.getRow(), robot.getColumn());
     }
 
 }

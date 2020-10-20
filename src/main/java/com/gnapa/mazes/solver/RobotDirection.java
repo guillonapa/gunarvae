@@ -2,7 +2,7 @@ package com.gnapa.mazes.solver;
 
 /**
  * <p>
- * 
+ * Enumeration to represent the direction in which a {@link IRobot} is facing.
  * </p>
  * 
  * @author Guillermo Narvaez
@@ -13,10 +13,11 @@ public enum RobotDirection {
 
     /**
      * <p>
-     * 
+     * Returns the direction in which the robot would
+     * be facing if it were to turn 90º to the right.
      * </p>
      * 
-     * @return
+     * @return the direction after turning right once
      */
     public RobotDirection nextRight() {
         switch (this) {
@@ -34,10 +35,11 @@ public enum RobotDirection {
     
     /**
      * <p>
-     * 
+     * Returns the direction in which the robot would
+     * be facing if it were to turn 90º to the left.
      * </p>
      * 
-     * @return
+     * @return the direction after turning left once
      */
     public RobotDirection nextLeft() {
         switch (this) {
@@ -55,42 +57,48 @@ public enum RobotDirection {
 
     /**
      * <p>
-     * 
+     * Returns the new index for the row in the maze where the
+     * robot should be if it were to move one step in its current
+     * direction.
      * </p>
      * 
-     * @param x
-     * @return
+     * @param row
+     *          current row
+     * @return the updated row index
      */
-    public int updateX(int x) {
+    public int updateRow(int row) {
         switch (this) {
         case DOWN:
-            return x + 1;
+            return row + 1;
         case UP:
-            return x - 1;
+            return row - 1;
         default:
             break;
         }
-        return x;
+        return row;
     }
 
     /**
      * <p>
-     * 
+     * Returns the new index for the column in the maze where the
+     * robot should be if it were to move one step in its current
+     * direction.
      * </p>
      * 
-     * @param y
-     * @return
+     * @param column
+     *          current column
+     * @return the updated column index
      */
-    public int updateY(int y) {
+    public int updateColumn(int column) {
         switch (this) {
         case RIGHT:
-            return y + 1;
+            return column + 1;
         case LEFT:
-            return y - 1;
+            return column - 1;
         default:
             break;
         }
-        return y;
+        return column;
     }
     
 }

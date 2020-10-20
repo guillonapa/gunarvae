@@ -14,7 +14,7 @@ public class TestGenerator {
     @Test
     public void generateWithoutWalls() {
         MazeGenerator generator = new MazeGenerator();
-        String[][] generate = generator.generate(5, 3, true);
+        String[][] generate = generator.generate(5, 3, false);
         String[][] expect = new String[][] {
             new String[] { MazeConstants.SPACE, MazeConstants.SPACE, MazeConstants.SPACE, MazeConstants.SPACE, MazeConstants.SPACE },
             new String[] { MazeConstants.SPACE, MazeConstants.SPACE, MazeConstants.SPACE, MazeConstants.SPACE, MazeConstants.SPACE },
@@ -26,7 +26,7 @@ public class TestGenerator {
     @Test
     public void generateWithWalls() {
         MazeGenerator generator = new MazeGenerator();
-        String[][] generate = generator.generate(5, 3, false);
+        String[][] generate = generator.generate(5, 3, true);
         String[][] expect = new String[][] {
             new String[] { MazeConstants.WALL, MazeConstants.WALL,  MazeConstants.WALL,  MazeConstants.WALL,  MazeConstants.WALL,  MazeConstants.WALL,  MazeConstants.WALL },
             new String[] { MazeConstants.WALL, MazeConstants.SPACE, MazeConstants.SPACE, MazeConstants.SPACE, MazeConstants.SPACE, MazeConstants.SPACE, MazeConstants.WALL },

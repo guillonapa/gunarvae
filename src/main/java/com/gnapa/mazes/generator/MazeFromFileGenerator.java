@@ -12,8 +12,37 @@ import com.gnapa.mazes.utils.Pair;
 
 /**
  * <p>
- * 
+ * Class to generate mazes or rooms from file representations of them.
+ * Every character '#' in the file is considered a wall, while every
+ * other character is considered a space. The number of columns will be
+ * equal to the maximum line length seen while parsing the file, while
+ * the number of rows will be equal to the number of rows in the file.
+ * Any missing characters will be interpreted as space. An example:
  * </p>
+ * 
+ * <pre>
+ * ###### #########
+ * ##            ##
+ * ###### ###### ##
+ * ###### #########
+ * ###         ####
+ * ########### ####
+ * ###########   ##
+ * #####       # ##
+ * # ### ####### ##
+ * # ### ####### ##
+ * # ###    #### ##
+ * # ### ####    ##
+ * #     #### #####
+ * ##### #### #####
+ * #####       ####
+ * ##### ##### ####
+ * ##    ##### ####
+ * ## ##   ### ####
+ * ## ### ####    #
+ * ##     ####### #
+ * ############## #
+ * </pre>
  * 
  * @author Guillermo Narvaez
  */
@@ -21,32 +50,46 @@ public class MazeFromFileGenerator {
     
     /**
      * <p>
-     * 
+     * Generates a two dimensional array for the maze/room represented in the
+     * given file.
      * </p>
      * 
      * @param file
-     * @return
+     *          maze/room representation
+     * @return the generated two dimensional array 
      * @throws IOException
      */
-    public static String[][] generateFromFile(File file) throws IOException {
-        Stream<String> lines = Files.lines(file.toPath());
+    public static String[][] generate(File file) throws IOException {
+        // read all lines from the file
+        Stream<String> linesStream = Files.lines(file.toPath());
+        List<String> lines = linesStream.collect(Collectors.toList());
+        linesStream.close();
+        
+        // the walls in the maze
         List<Pair> walls = new LinkedList<>();
-        int currLine = 0;
-        int numColumns = 0;
-        List<String> collectedLines = lines.collect(Collectors.toList());
-        for (String line : collectedLines) {
-            numColumns = Math.max(numColumns, line.length());
-            for (int i = 0; i < line.length(); i++) {
-                char c = line.charAt(i);
-                if (c == '#') walls.add(Pair.create(currLine, i));
+        
+        // read each character from each line
+        int row = 0;
+        int maxColumns = 0;
+        for (String line : lines) {
+            // update the maximum number of columns seen so far
+            maxColumns = Math.max(maxColumns, line.length());
+            // traverse the line
+            for (int column = 0; column < line.length(); column++) {
+                if (line.charAt(column) == '#') walls.add(Pair.create(row, column));
             }
-            currLine++;
+            row++;
         }
-        int numRows = currLine;
-        lines.close();
+        
+        // the total number of rows seen
+        int maxRows = row;
+        
+        // generate the maze
         MazeGenerator generator = new MazeGenerator();
-        String[][] maze = generator.generate(numRows, numColumns, true);
-        return generator.apply(maze, walls);
+        String[][] maze = generator.generate(maxRows, maxColumns, false);
+        
+        // apply the walls to the new maze
+        return generator.applyWalls(maze, walls);
     }
     
 }
