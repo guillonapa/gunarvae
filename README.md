@@ -92,25 +92,39 @@ MazeGenerator generator = new MazeGenerator();
 File mazeFile = Paths.get("simple.maze").toFile();
 String[][] maze = MazeFromFileGenerator.generate(mazeFile);
 
-// set the entrance (optional)
-maze = generator.entrance(maze, 0, 6);
-// set the exit (optional)
-maze = generator.exit(maze, 20, 14);
-
 // instantiate the solver
 IMazeSolver solver = new WallFollower();
 // instantiate the robot
-IRobot robot = new Explorer(RobotDirection.DOWN, Pair.create(0, 6));
+IRobot robot = new Runner(RobotDirection.DOWN, Pair.create(0, 6));
 // solve
 solver.solve(robot, maze);
-// set a translator (optional)
-Map<String, String> translator = Map.ofEntries(
-        entry(MazeConstants.ROBOT, "🤖"),
-        entry(MazeConstants.PATH, "⛅️"),
-        entry(MazeConstants.WALL, "🌲"),
-        entry(MazeConstants.SPACE, "☁️")
-);
 
 // print result
-MazeUtils.printMaze(maze, robot.getRow(), robot.getColumn(), translator);
+MazeUtils.printMaze(maze, robot.getRow(), robot.getColumn());
+```
+
+Where `simple.maze` is something like:
+
+```
+######?#########
+##            ##
+###### ###### ##
+###### #########
+###         ####
+########### ####
+###########   ##
+#####       # ##
+# ### ####### ##
+# ### ####### ##
+# ###    #### ##
+# ### ####    ##
+#     #### #####
+##### #### #####
+#####       ####
+##### ##### ####
+##    ##### ####
+## ##   ### ####
+## ### ####    #
+##     ####### #
+##############!#
 ```
